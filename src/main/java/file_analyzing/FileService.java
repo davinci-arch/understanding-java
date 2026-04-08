@@ -1,4 +1,4 @@
-package main.java.file_analyzing;
+package file_analyzing;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
