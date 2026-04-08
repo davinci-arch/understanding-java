@@ -158,6 +158,7 @@ public class FileService {
                 .limit(10)
                 .toArray(String[]::new);
     }
+    //testing purposes
 
     /**
      * Checks if file exist by given absolute path or relative path.
