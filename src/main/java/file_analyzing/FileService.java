@@ -31,8 +31,7 @@ public class FileService {
     }
 
     /**
-     * Reads all text from file and then saves it in variable for further use.
-     * Saves in variable with new line symbol like in file
+     * Reads the entire content of the file, preserving line breaks.
      *
      * @return string that contains all content of the file
      * @throws IOException if an I/O error occurs
@@ -53,7 +52,7 @@ public class FileService {
     }
 
     /**
-     * counts exactly amount of words that file contains.
+     * Counts exact number of words that file contains.
      *
      * @return amount of words in file
      * @throws IOException if an I/O error occurs
@@ -64,8 +63,7 @@ public class FileService {
     }
 
     /**
-     * counts how many lines does file contain.
-     * Uses the native method of class String to count lines
+     * Counts the number of lines in the file.
      *
      * @return number of lines in file
      * @throws IOException if an I/O error occurs
@@ -76,10 +74,10 @@ public class FileService {
     }
 
     /**
-     * counts how many symbols in file. Includes special symbols like \n \t and whitespaces
+     * Counts the number of characters in the file. Including newline, tab and whitespace charactes.
      *
      * @return amount of symbols in the file
-     * @throws IOException
+     * @throws IOException if an I/O error occurs
      */
     public int countSymbols() throws IOException {
         var content = readFileContent();
@@ -89,7 +87,7 @@ public class FileService {
     /**
      * Finds a specific word's position in the file. Position count starts from 0.
      *
-     * @param word uses as a searching word in the file and sensitive to register
+     * @param word uses as a searching word in the file and case-sensitive
      * @return <code>-1</code> if word wasn't found in file, or it's actual position in file
      * @throws IOException if I/O error occurs
      */
@@ -106,7 +104,7 @@ public class FileService {
     }
 
     /**
-     * Scan file for the longest word. If was found a few, returns first the longs word in the file
+     * Scans the file for the longest word. If was found a few, returns first the longs word in the file
      *
      * @return first the longest word in the file
      * @throws IOException if I/O error occurs
@@ -143,9 +141,9 @@ public class FileService {
     }
 
     /**
-     * Converts given Map into String array. After processing the Map, includes the key with the highest value
-     * to resulted array. Includes only first ten records, if there is more than ten records, includes only those
-     * with the highest value or if they have same value, includes words by their appearing in the text.
+     * Converts a word-count map into a String array of the top 10 entries.
+     * Entries are sorted by count in descending order.
+     * If multiple entries have the same count, they appear in the order of first occurrence in the text.
      *
      * @param map <code>word</code> as a key and <code>count</code> as value, amount of appearance in the text
      * @return array with top 10 most used words
@@ -163,7 +161,7 @@ public class FileService {
     /**
      * Checks if file exist by given absolute path or relative path.
      *
-     * @param path absolute or relative path if file exists in the same scope
+     * @param path absolute or relative path to the file
      * @return <code>true</code> if file exists
      *         <code>else</code> otherwise.
      */
