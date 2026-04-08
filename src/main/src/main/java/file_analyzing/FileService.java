@@ -150,21 +150,13 @@ public class FileService {
      * @param map <code>word</code> as a key and <code>count</code> as value, amount of appearance in the text
      * @return array with top 10 most used words
      */
-    //TODO: simplify method
     private String[] parseMapToArray(Map<String, Integer> map) {
-        var items = map.entrySet().stream()
+
+        return map.entrySet().stream()
                 .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
-                .toList();
-        if (items.size() < 10) {
-            return items.stream()
-                    .map(entry -> entry.getKey() + " - " + entry.getValue())
-                    .toArray(String[]::new);
-        } else {
-            return items.stream()
-                    .map(entry -> entry.getKey() + " - " + entry.getValue())
-                    .limit(10)
-                    .toArray(String[]::new);
-        }
+                .map(entry -> entry.getKey() + " - " + entry.getValue())
+                .limit(10)
+                .toArray(String[]::new);
     }
 
     /**
@@ -175,13 +167,7 @@ public class FileService {
      *         <code>else</code> otherwise.
      */
     private boolean isFileExist(String path) {
-        var file = Path.of(path);
-        boolean res = false;
-
-        if (Files.exists(file)) {
-            res = true;
-        }
-        return res;
+        return Files.exists(Path.of(path));
     }
 
 }
