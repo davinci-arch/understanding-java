@@ -34,10 +34,10 @@ public class RandomGuessGame {
                     System.out.printf("U have %d attempts left", (AMOUNT_OF_TRIES - (i + 1)));
                     System.out.println("Do you require a hint? y/n");
                     hintRequiernmentAnswer = scanner.nextLine();
-                    if (hintRequiernmentAnswer.trim().equalsIgnoreCase("y") && hintCounts < hintMaxCount) {
+                    if ("y".equals(hintRequiernmentAnswer.trim()) && hintCounts < hintMaxCount) {
                         System.out.println("Open first number? y/n");
                         hintRequiernmentAnswer = scanner.nextLine();
-                        if (hintRequiernmentAnswer.trim().equalsIgnoreCase("y")) {
+                        if ("y".equals(hintRequiernmentAnswer.trim())) {
                             var currentAmountOfPoints = player.getGlobalScore();
                             if (currentAmountOfPoints < requiredPoints) {
                                 System.out.println("Sorry, but u don't have enough points");
