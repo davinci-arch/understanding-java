@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class RandomGuessGame {
@@ -37,10 +39,11 @@ public class RandomGuessGame {
         score.put(player, points);
     }
 
-    //TODO: validate answer using ReGex
+    //TODO: change pattern to specific game level
     private boolean isAnswerValid(String answer) {
-
-        return false;
+        Pattern pattern = Pattern.compile("^\\d+");
+        Matcher matcher = pattern.matcher(answer);
+        return matcher.find();
     }
     //TODO: takes in parameter level
     private int generateRandomNumber() {
