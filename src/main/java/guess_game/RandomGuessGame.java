@@ -1,6 +1,9 @@
 package guess_game;
 
 import guess_game.exceptions.MissMatchRequiredFormat;
+import guess_game.service.ResultHandling;
+import guess_game.userinterface.UserInput;
+import guess_game.userinterface.UserOutput;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -9,11 +12,14 @@ import java.util.stream.Collectors;
 
 public class RandomGuessGame {
 
-    private final Map<Player, Long> score;
-    private Scanner scanner = new Scanner(System.in);
     private final int AMOUNT_OF_TRIES = 3;
-    public RandomGuessGame() {
-        score = new HashMap<>();
+    private ResultHandling resultHandling = new ResultHandling();
+    private final UserInput userInput;
+    private final UserOutput userOutput;
+
+    public RandomGuessGame(UserInput userInput, UserOutput userOutput) {
+        this.userInput = userInput;
+        this.userOutput = userOutput;
     }
 
     public void playGame(Player player, GameLevel chosenLevel) {
@@ -23,7 +29,7 @@ public class RandomGuessGame {
         var requiredPoints = chosenLevel.pointsForWinning;
         for(int i = 0; i < AMOUNT_OF_TRIES; i++) {
             var guessingNumber = generateRandomNumber(chosenLevel);
-            var answer = scanner.nextLine();
+            var answer = userInput.getLine();
             var hintRequiernmentAnswer = "";
 
             if (isAnswerValid(answer)) {
@@ -31,16 +37,16 @@ public class RandomGuessGame {
                     points += chosenLevel.pointsForWinning;
                     break;
                 } {
-                    System.out.printf("U have %d attempts left", (AMOUNT_OF_TRIES - (i + 1)));
-                    System.out.println("Do you require a hint? y/n");
-                    hintRequiernmentAnswer = scanner.nextLine();
+                    userOutput.printLine(String.format("U have %d attempts left", (AMOUNT_OF_TRIES - (i + 1))));
+                    userOutput.printLine("Do you require a hint? y/n");
+                    hintRequiernmentAnswer = userInput.getLine();
                     if ("y".equals(hintRequiernmentAnswer.trim()) && hintCounts < hintMaxCount) {
-                        System.out.println("Open first number? y/n");
-                        hintRequiernmentAnswer = scanner.nextLine();
+                        userOutput.printLine("Open first number? y/n");
+                        hintRequiernmentAnswer = userInput.getLine();
                         if ("y".equals(hintRequiernmentAnswer.trim())) {
                             var currentAmountOfPoints = player.getGlobalScore();
                             if (currentAmountOfPoints < requiredPoints) {
-                                System.out.println("Sorry, but u don't have enough points");
+                                userOutput.printLine("Sorry, but u don't have enough points");
                             } else {
                                 provideComplexHint(guessingNumber);
                                 player.setGlobalScore(currentAmountOfPoints - requiredPoints);
@@ -56,19 +62,19 @@ public class RandomGuessGame {
                 throw new MissMatchRequiredFormat(String.format("Your answer \"%s\" do not match the format", answer));
             }
         }
-        score.put(player, points);
+        resultHandling.savePlayerScore(player, points);
     }
 
     private void provideComplexHint(int guessingNumber) {
         String modifiedNumber = String.valueOf(guessingNumber).substring(0, 1);
         String replacer = "*".repeat(String.valueOf(guessingNumber).length() - 1);
-        System.out.println("Guessing number: " + modifiedNumber + replacer);
+        userOutput.printLine("Guessing number: " + modifiedNumber + replacer);
     }
 
     private void provideSimpleHint(int guessingNumber, String answer) {
         String hint = Integer.parseInt(answer) > guessingNumber ?
                 "ur answer is above targeted" : "ur answer is below targeted";
-        System.out.println(hint);
+        userOutput.printLine(hint);
     }
 
     private boolean isAnswerValid(String answer) {
@@ -96,8 +102,4 @@ public class RandomGuessGame {
         return random.nextInt(upperBound);
     }
 
-    public Map<Player, Long> getScoreBoard(){
-        return score.entrySet().stream()
-                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
 }
