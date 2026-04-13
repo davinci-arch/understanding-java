@@ -32,7 +32,7 @@ public class RandomGuessGame {
             var answer = userInput.getLine();
             var hintRequiernmentAnswer = "";
 
-            if (isAnswerValid(answer)) {
+            if (isAnswerValid(answer, chosenLevel)) {
                 if (Integer.parseInt(answer) == guessingNumber) {
                     points += chosenLevel.pointsForWinning;
                     break;
@@ -77,29 +77,22 @@ public class RandomGuessGame {
         userOutput.printLine(hint);
     }
 
-    private boolean isAnswerValid(String answer) {
+    private boolean isAnswerValid(String answer, GameLevel chosenLevel) {
         Pattern pattern = Pattern.compile("^\\d+");
         Matcher matcher = pattern.matcher(answer);
-        return matcher.find();
+        boolean isMatch = matcher.matches();
+        boolean isValid = false;
+        int parsedAnswer = Integer.parseInt(answer);
+
+        if (parsedAnswer > 0 && parsedAnswer <= chosenLevel.upperBound) {
+            isValid = true;
+        }
+
+        return isMatch && isValid;
     }
     private int generateRandomNumber(GameLevel chosenLevel) {
         Random random = new Random();
-        int upperBound = 0;
-        switch (chosenLevel) {
-            case EASY -> {
-                upperBound = 100;
-            }
-            case MEDIUM -> {
-                upperBound = 300;
-            }
-            case DIFFICULT -> {
-                upperBound = 1100;
-            }
-            case IMPOSSIBLE -> {
-                upperBound = 5000;
-            }
-        }
-        return random.nextInt(upperBound);
+        return random.nextInt(chosenLevel.upperBound);
     }
 
 }
