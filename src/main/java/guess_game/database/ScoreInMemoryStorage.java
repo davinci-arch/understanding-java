@@ -1,7 +1,6 @@
 package guess_game.database;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ScoreInMemoryStorage<T> implements Storage<T> {
 
@@ -13,7 +12,7 @@ public class ScoreInMemoryStorage<T> implements Storage<T> {
     }
 
     @Override
-    public T load() {
+    public Optional<T> load(String matcherLine) {
         return null;
     }
 

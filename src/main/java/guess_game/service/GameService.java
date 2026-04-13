@@ -20,6 +20,6 @@ public class GameService {
     }
 
     public Map<UUID, Map.Entry<Player, Long>> getPlayerScores() {
-        return scoreStorage.getScores();
+        return scoreStorage.loadAll();
     }
 }

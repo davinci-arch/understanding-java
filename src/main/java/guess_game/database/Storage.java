@@ -1,12 +1,12 @@
 package guess_game.database;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface Storage<T> {
 
     boolean save(T t);
-    T load();
+    Optional<T> load(String matcherLine);
     Map<UUID, T> loadAll();
 }

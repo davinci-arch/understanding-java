@@ -1,11 +1,12 @@
 package guess_game.database;
 
+import guess_game.Player;
+
 import java.util.*;
-import java.util.stream.Collectors;
 
-public class PlayersInMemoryStorage<T> implements Storage<T> {
+public class PlayersInMemoryStorage<T extends Player> implements Storage<T> {
 
-    private List<T> players;
+    private final List<T> players = new ArrayList<>();
 
     @Override
     public boolean save(T t) {
@@ -13,8 +14,10 @@ public class PlayersInMemoryStorage<T> implements Storage<T> {
     }
 
     @Override
-    public T load() {
-        return null;
+    public Optional<T> load(String nickname) {
+        return players.stream()
+                .filter(p -> p.getNickname().equals(nickname))
+                .findFirst();
     }
 
     @Override
