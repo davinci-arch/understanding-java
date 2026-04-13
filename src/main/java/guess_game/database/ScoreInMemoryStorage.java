@@ -1,9 +1,6 @@
 package guess_game.database;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ScoreInMemoryStorage<T> implements Storage<T> {
@@ -20,7 +17,8 @@ public class ScoreInMemoryStorage<T> implements Storage<T> {
         return null;
     }
 
-    public Map<UUID, T> getScores() {
+    @Override
+    public Map<UUID, T> loadAll() {
         return Collections.unmodifiableMap(scores);
     }
 }

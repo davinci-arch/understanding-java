@@ -1,8 +1,6 @@
 package guess_game.database;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PlayersInMemoryStorage<T> implements Storage<T> {
@@ -17,6 +15,11 @@ public class PlayersInMemoryStorage<T> implements Storage<T> {
     @Override
     public T load() {
         return null;
+    }
+
+    @Override
+    public Map<UUID, T> loadAll() {
+        return Map.of();
     }
 
     public List<T> getPlayers() {
