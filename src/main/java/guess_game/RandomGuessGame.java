@@ -1,25 +1,24 @@
 package guess_game;
 
 import guess_game.exceptions.MissMatchRequiredFormat;
-import guess_game.service.ResultHandling;
+import guess_game.service.GameService;
 import guess_game.userinterface.UserInput;
 import guess_game.userinterface.UserOutput;
 
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class RandomGuessGame {
 
     private final int AMOUNT_OF_TRIES = 3;
-    private ResultHandling resultHandling = new ResultHandling();
     private final UserInput userInput;
     private final UserOutput userOutput;
-
+    private GameService gameService;
     public RandomGuessGame(UserInput userInput, UserOutput userOutput) {
         this.userInput = userInput;
         this.userOutput = userOutput;
+        this.gameService = new GameService();
     }
 
     public void playGame(Player player, GameLevel chosenLevel) {
@@ -62,7 +61,7 @@ public class RandomGuessGame {
                 throw new MissMatchRequiredFormat(String.format("Your answer \"%s\" do not match the format", answer));
             }
         }
-        resultHandling.savePlayerScore(player, points);
+        gameService.savePlayerScore(player, points);
     }
 
     private void provideComplexHint(int guessingNumber) {
