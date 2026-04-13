@@ -2,9 +2,11 @@ package guess_game;
 
 import guess_game.exceptions.MissMatchRequiredFormat;
 import guess_game.service.GameService;
+import guess_game.service.PlayerService;
 import guess_game.userinterface.UserInput;
 import guess_game.userinterface.UserOutput;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,10 +17,13 @@ public class RandomGuessGame {
     private final UserInput userInput;
     private final UserOutput userOutput;
     private GameService gameService;
-    public RandomGuessGame(UserInput userInput, UserOutput userOutput) {
+    private PlayerService playerService;
+    public RandomGuessGame(UserInput userInput, UserOutput userOutput, PlayerService playerService) {
         this.userInput = userInput;
         this.userOutput = userOutput;
+        this.playerService = playerService;
         this.gameService = new GameService();
+
     }
 
     public void playGame(Player player, GameLevel chosenLevel) {
@@ -26,6 +31,8 @@ public class RandomGuessGame {
         var hintMaxCount = 1;
         var hintCounts = 0;
         var requiredPoints = chosenLevel.pointsForWinning;
+        var startedAt = LocalDate.now();
+        LocalDate endedAt;
         for(int i = 0; i < AMOUNT_OF_TRIES; i++) {
             var guessingNumber = generateRandomNumber(chosenLevel);
             var answer = userInput.getLine();
@@ -48,7 +55,7 @@ public class RandomGuessGame {
                                 userOutput.printLine("Sorry, but u don't have enough points");
                             } else {
                                 provideComplexHint(guessingNumber);
-                                player.setGlobalScore(currentAmountOfPoints - requiredPoints);
+                                playerService.updateAmountOfPoints(player,currentAmountOfPoints - requiredPoints);
                             }
                         } else {
                             provideSimpleHint(guessingNumber, answer);
@@ -62,6 +69,8 @@ public class RandomGuessGame {
             }
         }
         gameService.savePlayerScore(player, points);
+        endedAt = LocalDate.now();
+        playerService.saveHistory(new GameSessionEntity(UUID.randomUUID(), player, startedAt, endedAt, points));
     }
 
     private void provideComplexHint(int guessingNumber) {

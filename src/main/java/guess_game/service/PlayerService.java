@@ -17,14 +17,14 @@ public class PlayerService {
         this.storage = new PlayersInMemoryStorage<>();
     }
 
-    public void saveHistory(Player player, GameSessionEntity gameSession) {
-        var playerFound = findPlayer(player.getNickname());
-        var idGame = UUID.randomUUID();
+    public void saveHistory(GameSessionEntity gameSession) {
+        var playerFound = findPlayer(gameSession.player().getNickname());
+        var idRecord = UUID.randomUUID();
         var validObj = playerFound.orElseThrow(() ->
                 new NoSuchPlayerPresent(
-                        String.format("Player %s was not found", player.toString())
+                        String.format("Player %s was not found", gameSession.player())
                 ));
-        validObj.updateGameHistory(idGame, gameSession);
+        validObj.updateGameHistory(idRecord, gameSession);
     }
 
     public void updateAmountOfPoints(Player player, Long points) {
