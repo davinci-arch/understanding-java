@@ -10,10 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.UserDefinedFileAttributeView;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayersFileStorage<T extends Player> implements Storage<T> {
 
@@ -36,7 +33,6 @@ public class PlayersFileStorage<T extends Player> implements Storage<T> {
             System.out.printf("Directory with this path %s is already exists %n",
                     rootDirectory.toAbsolutePath());
         }
-
     }
 
     private void setAllAttributes(Map<String, String> customAttributes, Path pathToFile) throws IOException {
@@ -64,7 +60,6 @@ public class PlayersFileStorage<T extends Player> implements Storage<T> {
         this.pathToPlayers = pathToPlayers;
     }
 
-    //TODO modifie saving in format Map.
     @Override
     public boolean save(T t) {
         try(ObjectOutputStream out = new ObjectOutputStream(Files.newOutputStream(pathToPlayers))) {
@@ -77,7 +72,12 @@ public class PlayersFileStorage<T extends Player> implements Storage<T> {
 
     @Override
     public Optional<T> load(String matcherLine) {
-        return Optional.empty();
+
+        try(ObjectInputStream read = new ObjectInputStream(Files.newInputStream(pathToPlayers))) {
+            return Optional.of((T)read.readObject());
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
     //TODO READ all serialized data in file
     @Override
