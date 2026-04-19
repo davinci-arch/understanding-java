@@ -1,12 +1,13 @@
 package guess_game;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class Player {
+public class Player implements Serializable {
     private String nickname;
     private Long globalScore;
     private final Map<UUID, GameSessionEntity> gamesHistory = new HashMap<>();
