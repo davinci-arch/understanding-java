@@ -11,6 +11,13 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Provides method for starting game. Main class that handles game process,
+ * processing inputs, handling validation.
+ *
+ * @author davinci-arch
+ * @version 1.0
+ */
 public class RandomGuessGame {
 
     private final int AMOUNT_OF_TRIES = 3;
@@ -18,14 +25,27 @@ public class RandomGuessGame {
     private final UserOutput userOutput;
     private GameService gameService;
     private PlayerService playerService;
+
+    /**
+     * Constructor for initializing services needing for work
+     *
+     * @param userInput types of userInput.Console or file input
+     * @param userOutput types of userOutput.Console or file output
+     * @param playerService uses for updating player information
+     */
     public RandomGuessGame(UserInput userInput, UserOutput userOutput, PlayerService playerService) {
         this.userInput = userInput;
         this.userOutput = userOutput;
         this.playerService = playerService;
         this.gameService = new GameService();
-
     }
 
+    /**
+     * Executes main thread of the game.
+     *
+     * @param player current placeholder that starts the game
+     * @param chosenLevel level of difficulty:(EASY,MEDIUM,DIFFICULT, IMPOSSIBLE)
+     */
     public void playGame(Player player, GameLevel chosenLevel) {
         var points = 0L;
         var hintMaxCount = 1;
@@ -73,18 +93,36 @@ public class RandomGuessGame {
         playerService.saveHistory(new GameSessionEntity(UUID.randomUUID(), player, startedAt, endedAt, points));
     }
 
+    /**
+     * Provides complex hint for player. Displays first digit of the number.
+     *
+     * @param guessingNumber number that need to guess
+     */
     private void provideComplexHint(int guessingNumber) {
         String modifiedNumber = String.valueOf(guessingNumber).substring(0, 1);
         String replacer = "*".repeat(String.valueOf(guessingNumber).length() - 1);
         userOutput.printLine("Guessing number: " + modifiedNumber + replacer);
     }
 
+    /**
+     * Provide simple hint for player. Displays if guessed number was below or above chosen.
+     *
+     * @param guessingNumber number that need to guess
+     * @param answer users guessed number
+     */
     private void provideSimpleHint(int guessingNumber, String answer) {
         String hint = Integer.parseInt(answer) > guessingNumber ?
                 "ur answer is above targeted" : "ur answer is below targeted";
         userOutput.printLine(hint);
     }
 
+    /**
+     * Checks if users input is valid. Uses level difficulty upperBound for comparing users answer
+     *
+     * @param answer users guessed number
+     * @param chosenLevel chosen difficulty of the game
+     * @return <code>true</code> if users guessed number in bounds, otherwise false
+     */
     private boolean isAnswerValid(String answer, GameLevel chosenLevel) {
         Pattern pattern = Pattern.compile("^\\d+");
         Matcher matcher = pattern.matcher(answer);
@@ -98,6 +136,14 @@ public class RandomGuessGame {
 
         return isMatch && isValid;
     }
+
+    /**
+     * Generate random number for the game. Depending on what level was chosen, generated numbers
+     * in specific bounds.
+     *
+     * @param chosenLevel chosen level of the game
+     * @return generated value
+     */
     private int generateRandomNumber(GameLevel chosenLevel) {
         Random random = new Random();
         return random.nextInt(chosenLevel.upperBound);
