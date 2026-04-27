@@ -38,7 +38,7 @@ class GradeServiceTest {
         student3.addGrades(new Grade(2, subject2),
                 new Grade(2, subject2),
                 new Grade(3, subject2));
-        student2.addSubject(subject2);
+        student3.addSubject(subject2);
 
         dataService.registerStudent(student2);
         dataService.registerStudent(student1);
