@@ -7,15 +7,27 @@ import student_grade_system.entity.Subject;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
+/**
+ * Service responsible for grade calculations and student ranking.
+ */
 public class GradeService {
 
     private DataService dataService;
+    /**
+     * Creates service with data source.
+     *
+     * @param dataService data provider
+     */
 
     public GradeService(DataService dataService) {
         this.dataService = dataService;
     }
-
+    /**
+     * Calculates the average grade for a given subject across all students.
+     *
+     * @param subject subject to calculate average for
+     * @return average grade or 0.0 if no grades exist
+     */
     public double getRatingBySubject(Subject subject) {
         var studentsWithTargetedSubject = dataService.getAllStudents()
                 .stream()
@@ -33,7 +45,12 @@ public class GradeService {
         }
         return count > 0 ? result / count : 0.0;
     }
-
+    /**
+     * Returns top N students sorted by average grade descending.
+     *
+     * @param limit maximum number of students
+     * @return list of top students
+     */
     public List<Student> getTopStudents(int limit) {
         var ratings = getStudentsRating();
         return ratings.entrySet().stream()
@@ -42,7 +59,11 @@ public class GradeService {
                 .map(Map.Entry::getKey)
                 .toList();
     }
-
+    /**
+     * Returns all students sorted by their average grade descending.
+     *
+     * @return sorted list of students
+     */
     public List<Student> sortStudentByRating() {
         return getStudentsRating().entrySet()
                 .stream()
