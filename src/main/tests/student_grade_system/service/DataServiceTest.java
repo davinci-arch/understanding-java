@@ -4,10 +4,10 @@ package student_grade_system.service;
 import org.junit.jupiter.api.Test;
 import student_grade_system.entity.Student;
 import student_grade_system.entity.Subject;
-import student_grade_system.storage.InMemoryStorage;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DataServiceTest {
@@ -23,9 +23,10 @@ class DataServiceTest {
 
         var students = dataService.getAllStudents();
 
-        assertEquals(2, students.size());
-        assertEquals(student1.getLastName(), students.get(0).getLastName());
-        assertEquals(student2.getLastName(), students.get(1).getLastName());
+        assertThat(students).hasSize(2)
+                        .contains(student1, student2);
+        assertThat(students.get(0).getLastName()).isEqualTo(student1.getLastName());
+        assertThat(students.get(1).getFirstName()).isEqualTo(student2.getFirstName());
     }
 
     @Test
@@ -40,9 +41,10 @@ class DataServiceTest {
         dataService.registerStudent(student3);
 
         var students = dataService.getAllStudents();
-        assertEquals(2, students.size());
-        assertEquals(student1.getLastName(), students.get(0).getLastName());
-        assertEquals(student2.getLastName(), students.get(1).getLastName());
+        assertThat(students).hasSize(2)
+                        .contains(student1, student2);
+        assertThat(students.get(0).getLastName()).isEqualTo(student1.getLastName());
+        assertThat(students.get(1).getFirstName()).isEqualTo(student2.getFirstName());
 
     }
 
@@ -57,8 +59,10 @@ class DataServiceTest {
 
         var subjects = dataService.getAllSubjects();
         assertEquals(2, subjects.size());
-        assertEquals(subject1.getName(), subjects.get(0).getName());
-        assertEquals(subject2.getName(), subjects.get(1).getName());
+        assertThat(subjects).hasSize(2)
+                .contains(subject1, subject2);
+        assertThat(subjects.get(0).getName()).isEqualTo(subject1.getName());
+        assertThat(subjects.get(1).getName()).isEqualTo(subject2.getName());
     }
 
     @Test
@@ -73,7 +77,9 @@ class DataServiceTest {
         dataService.registerSubject(subject3);
         var subjects = dataService.getAllSubjects();
         assertEquals(2, subjects.size());
-        assertEquals(subject1.getName(), subjects.get(0).getName());
-        assertEquals(subject2.getName(), subjects.get(1).getName());
+        assertThat(subjects).hasSize(2)
+                .contains(subject1, subject2);
+        assertThat(subjects.get(0).getName()).isEqualTo(subject1.getName());
+        assertThat(subjects.get(1).getName()).isEqualTo(subject2.getName());
     }
 }
