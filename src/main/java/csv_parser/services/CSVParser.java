@@ -19,9 +19,16 @@ public class CSVParser {
     public List<CSVData> parse() throws IOException {
         var rawData = csvReader.getLines();
         var headers = getHeaders(rawData);
-        List<String> columns = new ArrayList<>();
-
-        return List.of();
+        List<CSVData> data = new ArrayList<>();
+        for (int i = 1; i < rawData.size(); i++) {
+            var rows = rawData.get(i).split(",");
+            var dataRow = new CSVData(headers);
+            for (int j = 0; j < rows.length; j++) {
+                dataRow.addData(rows[j], j, i-1);
+            }
+            data.add(dataRow);
+        }
+        return data;
     }
 
     private List<String> getHeaders(List<String> lines) {
