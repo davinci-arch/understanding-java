@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 import student_grade_system.entity.Grade;
 import student_grade_system.entity.Student;
 import student_grade_system.entity.Subject;
+import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 class GradeServiceTest {
     private static DataService dataService;
@@ -50,14 +50,14 @@ class GradeServiceTest {
         var gradeService = new GradeService(dataService);
         var subjectRating = gradeService.getRatingBySubject(dataService.getAllSubjects().get(0));
 
-        assertEquals("3.33", String.format("%.2f", subjectRating));
+        assertThat(String.format("%.2f", subjectRating)).isEqualTo("3.33");
     }
     @Test
     void shouldReturnZeroForSubjectIfNoGradesForSubject() {
         var gradeService = new GradeService(dataService);
         var subjectRating = gradeService.getRatingBySubject(dataService.getAllSubjects().get(2));
 
-        assertEquals(0.0, subjectRating);
+        assertThat(subjectRating).isEqualTo(0.0);
     }
 
 
@@ -66,9 +66,9 @@ class GradeServiceTest {
         var gradeService = new GradeService(dataService);
         var topStudents = gradeService.getTopStudents(2);
 
-        assertEquals(2, topStudents.size());
-        assertEquals("Novak", topStudents.get(0).getLastName());
-        assertEquals("Michael", topStudents.get(1).getLastName());
+        assertThat(topStudents).hasSize(2)
+                        .extracting(Student::getLastName)
+                                .contains("Novak", "Michael");
     }
 
     @Test
@@ -76,9 +76,9 @@ class GradeServiceTest {
         var gradeService = new GradeService(dataService);
         var sortedList = gradeService.sortStudentByRating();
 
-        assertEquals(3, sortedList.size());
-        assertEquals("Novak", sortedList.get(0).getLastName());
-        assertEquals("Monroe", sortedList.get(sortedList.size()-1).getLastName());
+        assertThat(sortedList).hasSize(3);
+        assertThat(sortedList.get(0).getLastName()).isEqualTo("Novak");
+        assertThat(sortedList.get(sortedList.size()-1).getLastName()).isEqualTo("Monroe");
 
     }
 }
