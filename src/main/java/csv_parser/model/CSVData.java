@@ -45,7 +45,12 @@ public class CSVData {
     }
 
     public void addData(String data, int index, int rowNumber) {
-        rowData.put(headers.get(index), data);
+        if (index >= headers.size()) {
+            rowData.put("empty", data);
+        }else {
+            rowData.put(headers.get(index), data);
+
+        }
         this.rowNumber = rowNumber;
     }
 
