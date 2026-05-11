@@ -21,7 +21,7 @@ public class CSVParser {
         var headers = getHeaders(rawData);
         List<CSVData> data = new ArrayList<>();
         for (int i = 1; i < rawData.size(); i++) {
-            var rows = rawData.get(i).split(",");
+            var rows = rawData.get(i).split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
             var dataRow = new CSVData(headers);
             for (int j = 0; j < rows.length; j++) {
                 dataRow.addData(rows[j], j, i-1);

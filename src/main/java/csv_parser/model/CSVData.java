@@ -1,9 +1,6 @@
 package csv_parser.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CSVData {
@@ -11,7 +8,7 @@ public class CSVData {
     private Map<String, String> rowData;
     private List<String> headers;
     public CSVData(List<String> headers) {
-        rowData = new HashMap<>();
+        rowData = new LinkedHashMap<>();
         this.headers = headers;
         for (String header : headers) {
             rowData.put(header, "");
