@@ -11,9 +11,10 @@ import java.util.List;
 public class CSVParser {
 
     private final CSVReader csvReader;
-
+    private final CSVStateMachine csvStateMachine;
     public CSVParser(CSVReader csvReader) {
         this.csvReader = csvReader;
+        this.csvStateMachine = new CSVStateMachine();
     }
 
     public List<CSVData> parse() throws IOException {
@@ -21,10 +22,10 @@ public class CSVParser {
         var headers = getHeaders(rawData);
         List<CSVData> data = new ArrayList<>();
         for (int i = 1; i < rawData.size(); i++) {
-            var rows = rawData.get(i).split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+            var rows = csvStateMachine.splitLine(rawData.get(i));
             var dataRow = new CSVData(headers);
-            for (int j = 0; j < rows.length; j++) {
-                dataRow.addData(rows[j], j, i-1);
+            for (int j = 0; j < rows.size(); j++) {
+                dataRow.addData(rows.get(j), j, i-1);
             }
             data.add(dataRow);
         }
