@@ -19,7 +19,8 @@ import static org.mockito.Mockito.*;
 class CSVParserTest {
     @Mock
     private CSVReader csvReader;
-
+    @Mock
+    private CSVValidator csvValidator;
     @InjectMocks
     private CSVParser csvParser;
 
@@ -31,9 +32,8 @@ class CSVParserTest {
                 "1,John Doe,28,john.doe@example.com,Prague,\"Loves,football\""
         );
         when(csvReader.getLines()).thenReturn(fakeRows);
-        var parser = new CSVParser(csvReader);
 
-        var data = parser.parse();
+        var data = csvParser.parse().getParsedData();
 
         verify(csvReader).getLines();
 
@@ -49,8 +49,7 @@ class CSVParserTest {
         );
         when(csvReader.getLines()).thenReturn(fakeRows);
 
-        var parse = new CSVParser(csvReader);
-        var data = parse.parse();
+        var data = csvParser.parse().getParsedData();
 
         verify(csvReader).getLines();
 
@@ -68,8 +67,7 @@ class CSVParserTest {
         );
         when(csvReader.getLines()).thenReturn(fakeRows);
 
-        var parse = new CSVParser(csvReader);
-        var data = parse.parse();
+        var data = csvParser.parse().getParsedData();
 
         verify(csvReader).getLines();
         assertThat(data).isNotNull();
@@ -86,8 +84,7 @@ class CSVParserTest {
         );
         when(csvReader.getLines()).thenReturn(fakeRows);
 
-        var parse = new CSVParser(csvReader);
-        var data = parse.parse();
+        var data = csvParser.parse().getParsedData();
 
         verify(csvReader).getLines();
         assertThat(data).isNotNull();
@@ -102,10 +99,30 @@ class CSVParserTest {
         );
         when(csvReader.getLines()).thenReturn(fakeRows);
 
-        var parse = new CSVParser(csvReader);
-        var data = parse.parse();
+        var data = csvParser.parse().getParsedData();
 
         verify(csvReader).getLines();
+
+        assertThat(data).isNotNull();
+        assertThat(data.size()).isEqualTo(fakeRows.size()-1);
+        assertThat(data.get(0).findHeader("name")).isEqualTo("\"John, Doe\"");
+        assertThat(data.get(0).findHeader("city")).isEqualTo(" Prague");
+    }
+    @Test
+    void shouldValidateParsedCSVData() throws IOException {
+        var fakeRows = List.of(
+                "id,name,age,email,city,notes",
+                "1,\"John, Doe\",28,john.doe@example.com, Prague,Loves football"
+        );
+        when(csvReader.getLines()).thenReturn(fakeRows);
+        when(csvValidator.validate(any())).thenReturn(true);
+
+        var data = csvParser.parse()
+                .withValidation()
+                .getParsedData();
+
+        verify(csvReader).getLines();
+        verify(csvValidator).validate(any());
 
         assertThat(data).isNotNull();
         assertThat(data.size()).isEqualTo(fakeRows.size()-1);
