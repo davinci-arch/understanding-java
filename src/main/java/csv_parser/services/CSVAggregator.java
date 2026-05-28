@@ -23,7 +23,7 @@ public class CSVAggregator {
     double getMin(List<CSVData> data, String columnName) {
         return data.stream()
                 .map(v -> Double.parseDouble(v.getRowData().get(columnName)))
-                .reduce(0.0, Double::min);
+                .reduce(Double.MAX_VALUE, Double::min);
     }
 
     double getSum(List<CSVData> data, String columnName) {
