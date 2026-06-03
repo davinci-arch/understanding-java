@@ -5,9 +5,17 @@ import csv_parser.model.CSVData;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Parses CSV content provided by a {@link CSVReader}
+ * into structured {@link CSVData} objects.
+ *
+ * Supports quoted values and delegates validation
+ * to {@link CSVValidator}.
+ *
+ * @author davinci-arch
+ */
 public class CSVParser {
 
     private final CSVReader csvReader;

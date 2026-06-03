@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * In-memory CSV reader used primarily for testing.
+ *
+ * @davinci-arch
+ */
 public class CSVFakeReader implements CSVReader{
     private List<String> rows;
 

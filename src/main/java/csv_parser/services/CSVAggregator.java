@@ -4,6 +4,14 @@ import csv_parser.model.CSVData;
 
 import java.util.List;
 
+/**
+ * Performs aggregation operations on parsed CSV data.
+ *
+ * Supports statistical calculations such as average,
+ * sum, minimum, maximum and row counting.
+ *
+ * @author davinci-arch
+ */
 public class CSVAggregator {
 
     double getAverage(List<CSVData> data, String columnName) {

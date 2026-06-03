@@ -1,8 +1,15 @@
 package csv_parser.model;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
+/**
+ * Represents a single row of CSV data.
+ *
+ * Stores column-value mappings together with
+ * the row number and header definitions.
+ *
+ * @author davinci-arch
+ */
 public class CSVData {
     private int rowNumber;
     private Map<String, String> rowData;

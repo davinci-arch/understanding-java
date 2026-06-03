@@ -8,6 +8,14 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Validates parsed CSV rows.
+ *
+ * Ensures required values are present and that
+ * field values satisfy validation constraints.
+ *
+ * @author davinci-arch
+ */
 public class CSVValidator {
 
     public boolean validate(CSVData csvData) {
