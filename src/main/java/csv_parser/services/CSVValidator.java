@@ -1,6 +1,6 @@
 package csv_parser.services;
 
-import csv_parser.exceptions.MissMatchingTypes;
+import csv_parser.exceptions.MismatchedTypeException;
 import csv_parser.exceptions.MissingCSVValueException;
 import csv_parser.model.CSVData;
 
@@ -22,7 +22,7 @@ public class CSVValidator {
                 throw new MissingCSVValueException(String.format("Missing value for column: %s", entry.getKey()));
             }
             if (matcher.find()) {
-                throw new MissMatchingTypes(String.format("This value {%s} has wrong number format", entry.getValue()));
+                throw new MismatchedTypeException(String.format("This value {%s} has wrong number format", entry.getValue()));
             }
 
         }

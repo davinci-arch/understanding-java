@@ -30,15 +30,7 @@ public class CSVData {
 
     public Map<String, String> getRowData() {
 
-        return rowData
-                .entrySet()
-                .stream()
-                .collect(
-                        Collectors
-                                .toUnmodifiableMap(
-                                        Map.Entry<String, String>::getKey, Map.Entry<String, String>::getValue
-                                )
-                );
+        return Collections.unmodifiableMap(rowData);
     }
 
     public void addData(String data, int index, int rowNumber) {

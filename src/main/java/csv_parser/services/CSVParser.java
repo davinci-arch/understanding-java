@@ -47,12 +47,12 @@ public class CSVParser {
 
     public List<CSVData> getParsedData() {
         if (parsedData == null) {
-            throw new NullPointerException();
+            throw new IllegalStateException("Parser has not parsed any data");
         }
         return parsedData;
     }
 
     private List<String> getHeaders(List<String> lines) {
-        return Arrays.stream(lines.get(0).split(",")).toList();
+        return csvStateMachine.splitLine(lines.get(0));
     }
 }

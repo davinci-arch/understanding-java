@@ -1,7 +1,7 @@
 package csv_parser.services;
 
 
-import csv_parser.exceptions.MissMatchingTypes;
+import csv_parser.exceptions.MismatchedTypeException;
 import csv_parser.exceptions.MissingCSVValueException;
 import csv_parser.model.CSVData;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,7 +57,7 @@ class CSVValidatorTest {
     void shouldReturnMissMatchTypeException() {
         CSVValidator validator = new CSVValidator();
 
-        assertThatExceptionOfType(MissMatchingTypes.class)
+        assertThatExceptionOfType(MismatchedTypeException.class)
                 .isThrownBy(() -> validator.validate(csvFakeData2))
                 .withMessage("This value {Joe5 Doe} has wrong number format");
     }

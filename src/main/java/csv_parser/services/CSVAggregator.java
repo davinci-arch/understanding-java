@@ -8,8 +8,8 @@ public class CSVAggregator {
 
     double getAverage(List<CSVData> data, String columnName) {
         var sumOfNumbers = data.stream()
-                .map(v -> Integer.parseInt(v.getRowData().get(columnName)))
-                .reduce(0, Integer::sum);
+                .map(v -> Double.parseDouble(v.getRowData().get(columnName)))
+                .reduce(0.0, Double::sum);
 
         return (double) sumOfNumbers / data.size();
     }
@@ -17,13 +17,15 @@ public class CSVAggregator {
     double getMax(List<CSVData> data, String columnName) {
         return data.stream()
                 .map(v -> Double.parseDouble(v.getRowData().get(columnName)))
-                .reduce(0.0, Double::max);
+                .max(Double::compare)
+                .orElseThrow();
     }
 
     double getMin(List<CSVData> data, String columnName) {
         return data.stream()
                 .map(v -> Double.parseDouble(v.getRowData().get(columnName)))
-                .reduce(Double.MAX_VALUE, Double::min);
+                .min(Double::compare)
+                .orElseThrow();
     }
 
     double getSum(List<CSVData> data, String columnName) {
