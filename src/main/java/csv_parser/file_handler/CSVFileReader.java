@@ -6,6 +6,11 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Reads CSV content from a file system path.
+ *
+ * @author davinci-arch
+ */
 public class CSVFileReader implements CSVReader {
     private final Path path;
 

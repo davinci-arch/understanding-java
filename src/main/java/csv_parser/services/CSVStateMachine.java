@@ -3,6 +3,14 @@ package csv_parser.services;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Splits a CSV line into individual fields while
+ * respecting quoted values and escaped delimiters.
+ *
+ * Implements a character-by-character parsing strategy.
+ *
+ * @author davinci-arch
+ */
 public final class CSVStateMachine {
 
 
